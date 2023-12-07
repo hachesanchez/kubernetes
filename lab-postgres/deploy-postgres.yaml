@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: container-postgres
+        image: postgres:latest
+        env:
+        - name: POSTGRES_DB
+          value: postgresdb
+        - name: POSTGRES_USER
+          value: helena
+        - name: POSTGRES_PASSWORD
+          value: helena@12345
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-storage  
+      volumes:
+      - name: postgres-storage
+        emptyDir: {}
